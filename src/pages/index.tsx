@@ -26,6 +26,7 @@ export default function Home() {
     control,
     formState: { errors, isSubmitting },
     handleSubmit,
+    reset
   } = useForm<TRegisterUserSchema>({
     resolver: zodResolver(registerUserZodSchema),
     defaultValues: {
@@ -35,7 +36,7 @@ export default function Home() {
 
   const onSubmit = async (data: TRegisterUserSchema) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(data);
+    reset();
   };
 
   return (
