@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 type User = {
-  id: Key | null | undefined;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;

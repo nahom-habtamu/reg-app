@@ -2,6 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import useCreateUser from "./hooks/useCreateUser";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { sleep } from "../../utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +30,6 @@ export default function Home() {
     control,
     formState: { errors, isSubmitting },
     handleSubmit,
-    reset
   } = useForm<TRegisterUserSchema>({
     resolver: zodResolver(registerUserZodSchema),
     defaultValues: {
@@ -34,9 +37,19 @@ export default function Home() {
     },
   });
 
+  const { createUser, isSuccess } = useCreateUser();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      sleep(500);
+      router.push("/");
+    }
+  }, [isSuccess]);
+
   const onSubmit = async (data: TRegisterUserSchema) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    reset();
+    createUser(data);
   };
 
   return (

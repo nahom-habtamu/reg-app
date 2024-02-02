@@ -1,15 +1,1 @@
-{
-    "users": [
-        {
-            "id": "someid",
-            "firstName": "NA",
-            "lastName": "HA",
-            "email": "Email@gmail.com",
-            "country": "Ethiopia",
-            "city": "Addis Ababa",
-            "region": "Yeka, AA",
-            "streetAddress": "No Add",
-            "postalCode": 1234
-        }
-    ]
-}
+{"users":[{"id":"someid","firstName":"NA","lastName":"HA","email":"Email@gmail.com","country":"Ethiopia","city":"Addis Ababa","region":"Yeka, AA","streetAddress":"No Add","postalCode":1234},{"id":"K6H3Tj68A","firstName":"Nahom","lastName":"Habtamu","email":"nahomhab2626@gmail.com","country":"Canada","city":"Addis Ababa","region":"AA/CC","streetAddress":"Some Adress","postalCode":1234},{"id":"P7LJEh6uK","firstName":"Nahom","lastName":"Habtamu","email":"nahomhab2626@gmail.com","country":"Mexico","city":"Addis Ababa","region":"AA/CC","streetAddress":"Some Adress test","postalCode":1234}]}
