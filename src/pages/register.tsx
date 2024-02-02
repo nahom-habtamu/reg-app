@@ -1,43 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Inter } from "next/font/google";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import useCreateUser from "./hooks/useCreateUser";
+import { Controller } from "react-hook-form";
+import useCreateUser, { type TRegisterUserSchema } from "./hooks/useCreateUser";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { sleep } from "../../utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const registerUserZodSchema = z.object({
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
-  email: z.string().email().min(1, { message: "Email is required" }),
-  country: z.string().min(1, { message: "Country is required" }),
-  city: z.string().min(1, { message: "City is required" }),
-  region: z.string().min(1, { message: "Region is required" }),
-  streetAddress: z.string().min(1, { message: "Street Address is required" }),
-  postalCode: z.coerce
-    .number()
-    .gte(999, "Postal code with 4 digits is required"),
-});
-
-type TRegisterUserSchema = z.infer<typeof registerUserZodSchema>;
-
 export default function Home() {
   const {
-    register,
+    createUser,
+    isSuccess,
     control,
-    formState: { errors, isSubmitting },
+    errors,
     handleSubmit,
-  } = useForm<TRegisterUserSchema>({
-    resolver: zodResolver(registerUserZodSchema),
-    defaultValues: {
-      country: "United States",
-    },
-  });
-
-  const { createUser, isSuccess } = useCreateUser();
+    isLoading,
+    register,
+  } = useCreateUser();
 
   const router = useRouter();
 
@@ -252,9 +231,9 @@ export default function Home() {
           <button
             type="submit"
             className="rounded-md w-96 h-14 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            disabled={isSubmitting}
+            disabled={isLoading}
           >
-            {isSubmitting ? "Saving..." : "Save"}
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </div>
       </form>
