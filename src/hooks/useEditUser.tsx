@@ -3,8 +3,10 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { z } from "zod";
+import useUser from "./useUser";
+import { useEffect, useRef } from "react";
 
-const registerUserZodSchema = z.object({
+const editUserZodSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email().min(1, { message: "Email is required" }),
@@ -17,34 +19,60 @@ const registerUserZodSchema = z.object({
     .gte(999, "Postal code with 4 digits is required"),
 });
 
-export type TRegisterUserSchema = z.infer<typeof registerUserZodSchema>;
+export type TEditUserSchema = z.infer<typeof editUserZodSchema>;
 
-export default function useCreateUser() {
+export default function useEditUser(id: string, enabled: boolean) {
+  const { user: fetchedUser } = useUser(id ?? "", enabled);
+
   const {
-    register,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
-  } = useForm<TRegisterUserSchema>({
-    resolver: zodResolver(registerUserZodSchema),
-    defaultValues: {
-      country: "United States",
-    },
+    register,
+    reset: resetFormData,
+  } = useForm<TEditUserSchema>({
+    resolver: zodResolver(editUserZodSchema),
+    defaultValues: {},
   });
 
+  const fillDataOnce = useRef<boolean>(true);
+
+  useEffect(() => {
+    if (fillDataOnce && fetchedUser) {
+      resetFormData({ ...fetchedUser });
+    }
+  }, [resetFormData, fetchedUser]);
+
   const queryClient = useQueryClient();
+
   const { isSuccess, mutate, isLoading } = useMutation({
-    mutationFn: async (user: TRegisterUserSchema) => {
-      return await axios.post("/api/users", user).then((res) => res.data);
+    mutationFn: async (user: TEditUserSchema) => {
+      return await axios
+        .patch(`/api/users/${id}`, user)
+        .then((res) => res.data);
     },
-    onMutate: (newUser) => {
+    onMutate: (updatedUser) => {
       const oldUsers = queryClient.getQueryData("users");
 
       if (queryClient.getQueryData("users")) {
-        queryClient.setQueryData("users", (old: any) => [...old, newUser]);
+        queryClient.setQueryData("users", (old: any) =>
+          old.map((oldItem: any) => {
+            if (oldItem.id === id) {
+              return {
+                id: id,
+                ...updatedUser,
+              };
+            } else {
+              return oldItem;
+            }
+          })
+        );
       }
 
       return () => queryClient.setQueryData("users", oldUsers);
+    },
+    onSuccess: () => {
+      alert("Edit Successfull");
     },
     onError: (error) => {
       console.error(error);
@@ -55,7 +83,7 @@ export default function useCreateUser() {
   });
 
   return {
-    createUser: mutate,
+    editUser: mutate,
     isSuccess,
     register,
     control,

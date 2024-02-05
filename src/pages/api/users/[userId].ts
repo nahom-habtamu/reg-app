@@ -31,7 +31,6 @@ export default async function handler(
       return await DELETE(req, res);
     }
   } catch (err) {
-    console.error(err);
     res.status(500);
     res.json({ message: "An unknown error occurred!" });
   }
@@ -58,12 +57,6 @@ async function PATCH(req: NextApiRequest, res: NextApiResponse<any>) {
     body,
   } = req;
 
-  if (body.body.includes("fail")) {
-    res.status(500);
-    res.json({ message: "An unknown error occurred!" });
-    return;
-  }
-
   const row = (await db.get()).users.find((d: User) => d.id == userId);
 
   if (!row) {
@@ -71,21 +64,14 @@ async function PATCH(req: NextApiRequest, res: NextApiResponse<any>) {
     return res.send("Not found");
   }
 
-  delete body.id;
-
-  const newRow = {
-    ...row,
-    ...body,
-  };
-
   await db.set((old: { users: User[] }) => {
     return {
       ...old,
-      users: old.users.map((d) => (d.id == userId ? newRow : d)),
+      users: old.users.map((d) => (d.id == userId ? { ...d, ...body } : d)),
     };
   });
 
-  res.json(newRow);
+  res.json(row);
 }
 
 async function DELETE(req: NextApiRequest, res: NextApiResponse<any>) {

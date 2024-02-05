@@ -1,41 +1,35 @@
+import useEditUser, { type TEditUserSchema } from "@/hooks/useEditUser";
 import { Inter } from "next/font/google";
-import { Controller } from "react-hook-form";
-import useCreateUser, { type TRegisterUserSchema } from "../hooks/useCreateUser";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { sleep } from "../../utils";
+import { useEffect } from "react";
+import { Controller } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+const EditUserPage = () => {
+  const router = useRouter();
+
+  const id = router.query.id as string;
+
   const {
-    createUser,
-    isSuccess,
+    editUser,
     control,
     errors,
     handleSubmit,
     isLoading,
     register,
-  } = useCreateUser();
+    isSuccess,
+  } = useEditUser(id, router.isReady);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isSuccess) {
-      sleep(500);
-      router.push("/");
-    }
-  }, [isSuccess]);
-
-  const onSubmit = async (data: TRegisterUserSchema) => {
-    createUser(data);
+  const onSubmit = async (data: TEditUserSchema) => {
+    editUser(data);
   };
 
   return (
     <main
       className={`flex min-h-screen flex-col items-center  ${inter.className}`}
     >
-      <div className="text-2xl p-6 ">Registration Page</div>
+      <div className="text-2xl p-6 ">Edit User Page</div>
       <form className="bg-white p-6 mt-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12 ">
           <div className="border-b border-gray-900/10 pb-12">
@@ -58,7 +52,7 @@ export default function Home() {
                   <input
                     {...register("firstName")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -80,7 +74,7 @@ export default function Home() {
                   <input
                     {...register("lastName")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -102,7 +96,7 @@ export default function Home() {
                   <input
                     {...register("email")}
                     type="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -230,7 +224,7 @@ export default function Home() {
         <div className="mt-6 flex items-center justify-center">
           <button
             type="submit"
-            className="rounded-md w-96 h-14 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md w-96 h-14 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
             disabled={isLoading}
           >
             {isLoading ? "Saving..." : "Save"}
@@ -239,4 +233,6 @@ export default function Home() {
       </form>
     </main>
   );
-}
+};
+
+export default EditUserPage;

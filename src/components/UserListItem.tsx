@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type User = {
   id: string;
   firstName: string;
@@ -31,6 +33,16 @@ const UserListItem = (user: User) => {
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           {user.postalCode}
         </span>
+      </div>
+      <div className="mt-6 flex items-center justify-center gap-1">
+        <Link href={`/edit/${user.id}`}>
+          <button className="rounded-md w-72 h-14 bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+            Edit
+          </button>
+        </Link>
+        <button className="rounded-md w-72 h-14 bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+          Delete
+        </button>
       </div>
     </div>
   );

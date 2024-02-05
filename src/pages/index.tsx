@@ -1,6 +1,6 @@
 import React from "react";
-import useUsers from "./hooks/useUsers";
-import UserListItem from "./components/UserListItem";
+import useUsers from "../hooks/useUsers";
+import UserListItem from "../components/UserListItem";
 
 const Users = () => {
   const { data: users, isLoading } = useUsers();
