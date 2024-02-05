@@ -1,3 +1,4 @@
+import useDeletePost from "@/hooks/useDeleteUser";
 import Link from "next/link";
 
 type User = {
@@ -13,6 +14,8 @@ type User = {
 };
 
 const UserListItem = (user: User) => {
+  const { deleteUser, isLoading, isSuccess } = useDeletePost();
+
   return (
     <div className="max-w-lg rounded overflow-hidden shadow-lg p-3">
       <div className="px-6 py-4">
@@ -40,8 +43,11 @@ const UserListItem = (user: User) => {
             Edit
           </button>
         </Link>
-        <button className="rounded-md w-72 h-14 bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
-          Delete
+        <button
+          onClick={() => deleteUser(user.id)}
+          className="rounded-md w-72 h-14 bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+        >
+          {isLoading ? " Loading..." : "Delete"}
         </button>
       </div>
     </div>
