@@ -36,11 +36,18 @@ export default function Home() {
 
   return (
     <>
-      <NavBar activePage="/"/>
+      <NavBar activePage="register" />
       <main
         className={`flex min-h-screen flex-col items-center  ${inter.className}`}
       >
-        <div className="text-2xl p-8 ">Register Here</div>
+        <div className="text-2xl pt-4">
+          Haven't registered yet, Sign Up Here
+        </div>
+        <div className="text text-sm text-center text-gray-400 max-w-[600px] mx-auto mt-2 mb-8">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          Necessitatibus, odio quos voluptas dolore provident hic porro sed
+          alias est voluptatibus
+        </div>
         <form
           className="bg-white p-6 border border-indigo-400 min-w-[800px]"
           onSubmit={handleSubmit(onSubmit)}
