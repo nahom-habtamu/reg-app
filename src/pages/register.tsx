@@ -1,9 +1,12 @@
 import { Inter } from "next/font/google";
 import { Controller } from "react-hook-form";
-import useCreateUser, { type TRegisterUserSchema } from "../hooks/useCreateUser";
+import useCreateUser, {
+  type TRegisterUserSchema,
+} from "../hooks/useCreateUser";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { sleep } from "../../utils";
+import { NavBar } from "@/components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,21 +35,18 @@ export default function Home() {
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center  ${inter.className}`}
-    >
-      <div className="text-2xl p-6 ">Registration Page</div>
-      <form className="bg-white p-6 mt-5" onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-12 ">
-          <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
-              Personal InFormation
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Use a permanent address where you can receive mail.
-            </p>
-
-            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+    <>
+      <NavBar activePage="/"/>
+      <main
+        className={`flex min-h-screen flex-col items-center  ${inter.className}`}
+      >
+        <div className="text-2xl p-8 ">Register Here</div>
+        <form
+          className="bg-white p-6 border border-indigo-400 min-w-[800px]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="space-y-12 ">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
                   htmlFor="first-name"
@@ -58,7 +58,7 @@ export default function Home() {
                   <input
                     {...register("firstName")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -80,7 +80,7 @@ export default function Home() {
                   <input
                     {...register("lastName")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -91,7 +91,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="sm:col-span-4">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -102,7 +102,7 @@ export default function Home() {
                   <input
                     {...register("email")}
                     type="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -127,7 +127,7 @@ export default function Home() {
                     render={({ field }) => (
                       <select
                         id="country"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2.5"
                         {...field}
                       >
                         <option>United States</option>
@@ -139,18 +139,18 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="col-span-full">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="street-address"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Street address
+                  Street Address
                 </label>
                 <div className="mt-2">
                   <input
                     {...register("streetAddress")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
                 {errors.streetAddress && (
@@ -160,7 +160,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="sm:col-span-2 sm:col-start-1">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="city"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -172,7 +172,7 @@ export default function Home() {
                     {...register("city")}
                     type="text"
                     autoComplete="address-level2"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
                 {errors.city && (
@@ -182,7 +182,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="region"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -193,7 +193,7 @@ export default function Home() {
                   <input
                     {...register("region")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
                 {errors.region && (
@@ -203,7 +203,7 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="postal-code"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -214,7 +214,7 @@ export default function Home() {
                   <input
                     {...register("postalCode")}
                     type="text"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
                 {errors.postalCode && (
@@ -225,18 +225,18 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-6 flex items-center justify-center">
-          <button
-            type="submit"
-            className="rounded-md w-96 h-14 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            disabled={isLoading}
-          >
-            {isLoading ? "Saving..." : "Save"}
-          </button>
-        </div>
-      </form>
-    </main>
+          <div className="mt-6 flex items-center justify-center">
+            <button
+              type="submit"
+              className="rounded-md w-96 h-14 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save"}
+            </button>
+          </div>
+        </form>
+      </main>
+    </>
   );
 }
