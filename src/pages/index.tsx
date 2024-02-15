@@ -5,7 +5,7 @@ import { NavBar } from "@/components/NavBar";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const Users = () => {
-  const { data: users, isLoading } = useUsers();
+  const { users, isLoading } = useUsers();
 
   return (
     <>
