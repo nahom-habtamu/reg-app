@@ -14,7 +14,12 @@ type User = {
 };
 
 export default function useUsers() {
-  return useQuery("users", () =>
+  const { data: users, isLoading } = useQuery("users", () =>
     axios.get<User[]>("/api/users").then((res) => res.data)
   );
+
+  return {
+    users,
+    isLoading,
+  };
 }

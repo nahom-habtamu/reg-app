@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { z } from "zod";
@@ -14,7 +14,7 @@ const registerUserZodSchema = z.object({
   streetAddress: z.string().min(1, { message: "Street Address is required" }),
   postalCode: z.coerce
     .number()
-    .gte(999, "Postal code with 4 digits is required"),
+    .gt(999, "Postal code should be a 4 digit postive number"),
 });
 
 export type TRegisterUserSchema = z.infer<typeof registerUserZodSchema>;
@@ -33,29 +33,25 @@ export default function useCreateUser() {
   });
 
   const queryClient = useQueryClient();
-  const { isSuccess, mutate, isLoading } = useMutation({
+
+  const {
+    isSuccess,
+    mutate: createUser,
+    isLoading,
+  } = useMutation({
     mutationFn: async (user: TRegisterUserSchema) => {
       return await axios.post("/api/users", user).then((res) => res.data);
-    },
-    onMutate: (newUser) => {
-      const oldUsers = queryClient.getQueryData("users");
-
-      if (queryClient.getQueryData("users")) {
-        queryClient.setQueryData("users", (old: any) => [...old, newUser]);
-      }
-
-      return () => queryClient.setQueryData("users", oldUsers);
     },
     onError: (error) => {
       console.error(error);
     },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries("users");
     },
   });
 
   return {
-    createUser: mutate,
+    createUser,
     isSuccess,
     register,
     control,
