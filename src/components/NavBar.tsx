@@ -8,10 +8,10 @@ export const NavBar = ({ activePage }: { activePage: string }) => {
 
   return (
     <section className="bg-white shadow-md">
-      <nav className="bg-white border-gray-200 dark:bg-gray-900 max-w-[800px] mx-auto">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900 max-w-[1400px] mx-auto">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link href="/">
-            <span className="self-center h-fit text-4xl font-semibold whitespace-nowrap text-indigo-400 ">
+            <span className="self-center h-fit text-xl font-semibold whitespace-nowrap text-indigo-400 ">
               Logo
             </span>
           </Link>

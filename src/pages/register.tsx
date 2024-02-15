@@ -40,7 +40,7 @@ export default function Home() {
       <main
         className={`flex min-h-screen flex-col items-center  ${inter.className}`}
       >
-        <div className="text-2xl pt-4">
+        <div className="text-2xl pt-8">
           Haven't registered yet, Sign Up Here
         </div>
         <div className="text text-sm text-center text-gray-400 max-w-[600px] mx-auto mt-2 mb-8">
