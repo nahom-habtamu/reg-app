@@ -38,6 +38,7 @@ export default function useCreateUser() {
     isSuccess,
     mutate: createUser,
     isLoading,
+    error: errorFromApi,
   } = useMutation({
     mutationFn: async (user: TRegisterUserSchema) => {
       return await axios.post("/api/users", user).then((res) => res.data);
@@ -58,5 +59,6 @@ export default function useCreateUser() {
     handleSubmit,
     errors,
     isLoading,
+    errorFromApi
   };
 }

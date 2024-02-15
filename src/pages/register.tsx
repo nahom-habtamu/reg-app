@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { NavBar } from "@/components/NavBar";
 import { Input } from "@/components/form/Input";
 import { DropDownInput } from "@/components/form/DropDownInput";
+import { isAxiosError } from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function Home() {
     handleSubmit,
     isLoading,
     register,
+    errorFromApi,
   } = useCreateUser();
 
   const router = useRouter();
@@ -31,6 +33,14 @@ export default function Home() {
 
   const onSubmit = async (data: TRegisterUserSchema) => {
     createUser(data);
+  };
+
+  const formatErrorMessage = () => {
+    let errorMessage = "Registration Failed!!";
+    if (isAxiosError(errorFromApi)) {
+      errorMessage = errorFromApi.response?.data.message;
+    }
+    return errorMessage;
   };
 
   return (
@@ -136,6 +146,12 @@ export default function Home() {
               {isLoading ? "Saving..." : "Save"}
             </button>
           </div>
+
+          {!errorFromApi ? null : (
+            <div className="text-md text-center text-red-500 m-5">
+              {formatErrorMessage()}
+            </div>
+          )}
         </form>
       </main>
     </>
