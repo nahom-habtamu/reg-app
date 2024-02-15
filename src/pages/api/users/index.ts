@@ -68,7 +68,7 @@ async function POST(req: NextApiRequest, res: NextApiResponse<any>) {
 
   const users: User[] = (await db.get()).users;
 
-  if (users.filter((user) => user.email === req.body.email)) {
+  if (users.find((user) => user.email === req.body.email)) {
     res.status(400);
     res.json({ message: "User with that email already registered" });
     return;
