@@ -4,6 +4,25 @@ import UserListItem from "../components/UserListItem";
 import { NavBar } from "@/components/NavBar";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
+const UsersTableLoadingState = () => {
+  return (
+    <div className="border border-gray-200 m-4 max-w-[1400px] h-[200px] mx-auto flex flex-col justify-center items-center">
+      <div className="text-center text-md pb-4">
+        Loading Registered Users....
+      </div>
+      <LoadingSpinner size="lg" />
+    </div>
+  );
+};
+
+const UsersTableEmptyState = () => {
+  return (
+    <div className="border border-gray-200 m-4 max-w-[1400px] h-[200px] mx-auto flex flex-col justify-center items-center">
+      <div className="text-center text-md pb-4">No users</div>
+    </div>
+  );
+};
+
 const Users = () => {
   const { users, isLoading } = useUsers();
 
@@ -16,7 +35,12 @@ const Users = () => {
         Necessitatibus, odio quos voluptas dolore provident hic porro sed alias
         est voluptatibus
       </div>
-      {!isLoading ? (
+
+      {isLoading ? (
+        <UsersTableLoadingState />
+      ) : users?.length === 0 ? (
+        <UsersTableEmptyState />
+      ) : (
         <div className="relative overflow-x-auto border border-gray-200 m-4 max-w-[1400px] mx-auto">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -50,13 +74,6 @@ const Users = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      ) : (
-        <div className="border border-gray-200 m-4 max-w-[1400px] h-[200px] mx-auto flex flex-col justify-center items-center">
-          <div className="text-center text-md pb-4">
-            Loading Registered Users....
-          </div>
-          <LoadingSpinner size="lg" />
         </div>
       )}
     </>
