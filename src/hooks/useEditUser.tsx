@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { z } from "zod";
 import useUser from "./useUser";
 import { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 const editUserZodSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
@@ -48,17 +49,43 @@ export default function useEditUser(id: string) {
 
   const { isSuccess, mutate, isLoading } = useMutation({
     mutationFn: async (user: TEditUserSchema) => {
-      return await axios
-        .patch(`/api/users/${id}`, user)
-        .then((res) => res.data);
+      return await axios.patch(`/api/users/${id}`, user).then((res) => res.data);
     },
 
     onSuccess: () => {
-      alert("Edit Successfull");
+      toast("User Edit successfull", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        progress: undefined,
+        theme: "light",
+        style: {
+          color: "green",
+          marginTop: "-15px",
+        },
+      });
       queryClient.invalidateQueries("users");
     },
     onError: (error) => {
-      console.error(error);
+      let errorMessage = "Editing user failed";
+      if (isAxiosError(error)) {
+        errorMessage = error.response?.data.message ?? errorMessage;
+      }
+      toast(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        progress: undefined,
+        theme: "light",
+        style: {
+          color: "red",
+          marginTop: "-15px",
+        },
+      });
     },
   });
 
@@ -70,6 +97,6 @@ export default function useEditUser(id: string) {
     handleSubmit,
     errors,
     isLoading,
-    isFetchingUserLoading
+    isFetchingUserLoading,
   };
 }

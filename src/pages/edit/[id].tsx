@@ -40,12 +40,12 @@ const EditUserPage = () => {
         </div>
 
         {isFetchingUserLoading ? (
-          <div className="bg-white p-6 border border-indigo-400 h-96 min-w-[800px] flex justify-center items-center">
+          <div className="bg-white p-6 border border-green-400 h-96 min-w-[800px] flex justify-center items-center">
             <LoadingSpinner size="lg"/>
           </div>
         ) : (
           <form
-            className="bg-white p-6 border border-indigo-400 min-w-[800px]"
+            className="bg-white p-6 border border-green-400 min-w-[800px]"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="space-y-12 ">
