@@ -21,15 +21,15 @@ const editUserZodSchema = z.object({
 
 export type TEditUserSchema = z.infer<typeof editUserZodSchema>;
 
-export default function useEditUser(id: string, enabled: boolean) {
-  const { user: fetchedUser } = useUser(id ?? "", enabled);
+export default function useEditUser(id: string) {
+  const { user, isFetchingUserLoading } = useUser(id);
 
   const {
     control,
     formState: { errors },
     handleSubmit,
     register,
-    reset: resetFormData,
+    reset,
   } = useForm<TEditUserSchema>({
     resolver: zodResolver(editUserZodSchema),
     defaultValues: {},
@@ -38,10 +38,11 @@ export default function useEditUser(id: string, enabled: boolean) {
   const fillDataOnce = useRef<boolean>(true);
 
   useEffect(() => {
-    if (fillDataOnce && fetchedUser) {
-      resetFormData({ ...fetchedUser });
+    if (fillDataOnce) {
+      fillDataOnce.current = false;
+      reset({ ...user });
     }
-  }, [resetFormData, fetchedUser]);
+  }, [user]);
 
   const queryClient = useQueryClient();
 
@@ -51,34 +52,13 @@ export default function useEditUser(id: string, enabled: boolean) {
         .patch(`/api/users/${id}`, user)
         .then((res) => res.data);
     },
-    onMutate: (updatedUser) => {
-      const oldUsers = queryClient.getQueryData("users");
 
-      if (queryClient.getQueryData("users")) {
-        queryClient.setQueryData("users", (old: any) =>
-          old.map((oldItem: any) => {
-            if (oldItem.id === id) {
-              return {
-                id: id,
-                ...updatedUser,
-              };
-            } else {
-              return oldItem;
-            }
-          })
-        );
-      }
-
-      return () => queryClient.setQueryData("users", oldUsers);
-    },
     onSuccess: () => {
       alert("Edit Successfull");
+      queryClient.invalidateQueries("users");
     },
     onError: (error) => {
       console.error(error);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("users");
     },
   });
 
@@ -90,5 +70,6 @@ export default function useEditUser(id: string, enabled: boolean) {
     handleSubmit,
     errors,
     isLoading,
+    isFetchingUserLoading
   };
 }

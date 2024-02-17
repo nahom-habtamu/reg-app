@@ -1,8 +1,5 @@
 import axios from "axios";
-import { useQuery, useQueryClient } from "react-query";
-
-export const fetchUser = (userId: string) =>
-  axios.get(`/api/users/${userId}`).then((res) => res.data);
+import { useQuery } from "react-query";
 
 export type User = {
   id: string;
@@ -16,17 +13,14 @@ export type User = {
   postalCode: number;
 };
 
-export default function useUser(userId: string, enabled: boolean) {
-  const queryClient = useQueryClient();
-  const { data } = useQuery(["users", userId], () => fetchUser(userId), {
-    initialData: () => {
-      const fetchedUsers: User[] = queryClient.getQueryData("users") ?? [];
-      return fetchedUsers.find((d) => d.id == userId);
-    },
-    enabled: enabled,
-  });
+export default function useUser(userId: string) {
+  const { data: user, isLoading: isFetchingUserLoading } = useQuery<User | undefined>(
+    ["users", userId],
+    () => axios.get(`/api/users/${userId}`).then((res) => res.data)
+  );
 
   return {
-    user: data as User | undefined,
+    user,
+    isFetchingUserLoading,
   };
 }
