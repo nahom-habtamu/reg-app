@@ -14,9 +14,14 @@ export type User = {
 };
 
 export default function useUser(userId: string) {
-  const { data: user, isLoading: isFetchingUserLoading } = useQuery<User | undefined>(
+  const { data: user, isLoading: isFetchingUserLoading } = useQuery<
+    User | undefined
+  >(
     ["users", userId],
-    () => axios.get(`/api/users/${userId}`).then((res) => res.data)
+    () => axios.get(`/api/users/${userId}`).then((res) => res.data),
+    {
+      enabled: userId !== undefined,
+    }
   );
 
   return {

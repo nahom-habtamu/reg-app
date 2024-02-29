@@ -39,7 +39,7 @@ export default function useEditUser(id: string) {
   const fillDataOnce = useRef<boolean>(true);
 
   useEffect(() => {
-    if (fillDataOnce) {
+    if (fillDataOnce.current && user) {
       fillDataOnce.current = false;
       reset({ ...user });
     }
@@ -49,7 +49,9 @@ export default function useEditUser(id: string) {
 
   const { isSuccess, mutate, isLoading } = useMutation({
     mutationFn: async (user: TEditUserSchema) => {
-      return await axios.patch(`/api/users/${id}`, user).then((res) => res.data);
+      return await axios
+        .patch(`/api/users/${id}`, user)
+        .then((res) => res.data);
     },
 
     onSuccess: () => {

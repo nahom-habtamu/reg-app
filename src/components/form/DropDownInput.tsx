@@ -26,7 +26,7 @@ export const DropDownInput = (props: DropDownInputProps) => {
               {...field}
             >
               {options.map((option) => (
-                <option>{option}</option>
+                <option key={option}>{option}</option>
               ))}
             </select>
           )}
